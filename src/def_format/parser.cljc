@@ -6,7 +6,7 @@
   placement-grid statements. Not full DEF grammar conformance (no
   SPECIALNETS, GCELLGRID, VIAS, PROPERTYDEFINITIONS, ...). Mirrors
   kotoba-lang/org-si2-lef's parse-lef in structure."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [def-format.component :as component]
             [def-format.net :as net]
             [def-format.row :as row]))
@@ -30,7 +30,7 @@
       [pairs i])))
 
 (defn- component-status [s]
-  (case (str/upper-case (strip-semi s))
+  (case (str/upper (strip-semi s))
     "PLACED" :placed "FIXED" :fixed "COVER" :cover "UNPLACED" :unplaced :unplaced))
 
 (defn- parse-component-line
@@ -74,7 +74,7 @@
   "TRACKS <dir> <start> DO <count> STEP <step> LAYER <layer> ;"
   [tokens]
   (row/track (strip-semi (nth tokens 8))
-             (case (str/upper-case (nth tokens 1)) "X" :x "Y" :y :x)
+             (case (str/upper (nth tokens 1)) "X" :x "Y" :y :x)
              (parse-int (nth tokens 2) 0)
              (parse-int (nth tokens 6) 0)
              (parse-int (nth tokens 4) 0)))
